@@ -1,0 +1,353 @@
+<!doctype html>
+<html lang="ca">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#141312">
+<meta name="description" content="Una sorpresa per a tu. Rasca i descobreix-la.">
+<meta property="og:title" content="Una sorpresa per a tu ✦">
+<meta property="og:description" content="Rasca, si t'atreveixes.">
+<meta property="og:type" content="website">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="manifest" href="manifest.webmanifest">
+<title>Una sorpresa per a tu</title>
+<style>
+@font-face{font-family:Anton;src:url(fonts/anton.woff2) format("woff2");font-display:swap}
+@font-face{font-family:"Allerta Stencil";src:url(fonts/allerta-stencil.woff2) format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:Oswald;src:url(fonts/oswald.woff2) format("woff2");font-weight:200 700;font-display:swap}
+@font-face{font-family:"Open Sans";src:url(fonts/open-sans.woff2) format("woff2");font-weight:300 800;font-display:swap}
+:root{color-scheme:dark;--bg:#141312;--ink:#14110f;--paper:#ece3cf;--kraft:#e0cc9a;--red:#e3402a;--yellow:#f3cf3a;--cream:#f4ecdc;--muted:#b3a995;--line:#ffffff24;--ease:cubic-bezier(.22,1,.36,1);--display:Anton,Impact,"Arial Narrow Bold",sans-serif;--cond:Oswald,"Arial Narrow",sans-serif;--type:"Allerta Stencil","Arial Narrow",Impact,sans-serif;--body:"Open Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-family:var(--body);-webkit-tap-highlight-color:transparent}
+*{box-sizing:border-box}[hidden]{display:none!important}html{min-height:100%;overflow-x:clip}body{margin:0;min-height:100dvh;background:var(--bg);color:var(--cream);overflow-x:hidden}button,a{font:inherit;cursor:pointer}button:focus-visible,a:focus-visible,[role=button]:focus-visible{outline:3px solid var(--yellow);outline-offset:4px}button:disabled{cursor:not-allowed;opacity:.5}
+#backdrop{position:fixed;inset:0;z-index:-2;pointer-events:none;background:radial-gradient(120% 70% at 50% -10%,#3a2a22 0,transparent 60%),radial-gradient(90% 50% at 50% 110%,#4a1d16aa,transparent 70%),var(--bg)}
+#grain{position:fixed;inset:-50%;z-index:-1;pointer-events:none;opacity:.09;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .6 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+.shell{width:min(100%,520px);margin:auto;min-height:100dvh;position:relative;padding:0 20px env(safe-area-inset-bottom)}
+.topbar{height:64px;display:flex;align-items:center;justify-content:space-between;position:relative;z-index:11}
+.wordmark{font-family:var(--type);font-size:12px;letter-spacing:.06em;color:var(--muted);text-transform:uppercase}.wordmark b{color:var(--yellow);font-weight:400}
+.sound{position:relative;width:42px;height:42px;border-radius:50%;border:1.5px solid var(--line);background:#ffffff0d;color:var(--cream);font-size:18px;display:grid;place-items:center;padding:0}
+.sound[aria-pressed=false]{color:var(--muted)}.sound[aria-pressed=false]::after{content:"";position:absolute;width:26px;height:2.5px;background:var(--red);transform:rotate(-45deg);border-radius:2px}
+.scene{display:none;position:relative;min-height:calc(100dvh - 64px);padding:14px 0 36px;animation:sceneEnter .6s var(--ease) both}.scene.active{display:flex;flex-direction:column;align-items:center;text-align:center}
+@keyframes sceneEnter{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.eyebrow{font-family:var(--type);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--yellow);margin:0 0 14px}
+.hero{font-family:var(--display);font-weight:400;text-transform:uppercase;font-size:clamp(40px,12.5vw,60px);line-height:.98;letter-spacing:.005em;margin:0;max-width:460px;text-wrap:balance}.hero em{font-style:normal;color:var(--yellow)}
+.sub{font-family:var(--body);font-size:15px;line-height:1.5;color:var(--muted);margin:16px auto 0;max-width:320px;text-wrap:balance}
+.btn{font-family:var(--display);text-transform:uppercase;letter-spacing:.06em;font-size:15px;line-height:1;min-height:48px;padding:0 24px;border-radius:4px;border:2px solid var(--ink);display:inline-flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;transition:transform .15s,box-shadow .15s}
+.btn-primary{background:var(--yellow);color:var(--ink);box-shadow:4px 4px 0 var(--red)}.btn-primary:active{transform:translate(3px,3px);box-shadow:1px 1px 0 var(--red)}
+.btn-outline{background:transparent;color:var(--cream);border-color:#ece3cf80}.btn-outline:active{transform:scale(.97)}
+.btn-text{background:none;border:0;color:var(--muted);font-family:var(--body);font-size:13px;min-height:44px;text-decoration:underline;text-underline-offset:4px;padding:0 12px}
+.btn-row{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
+
+/* INTRO: rasca i guanya */
+#intro{justify-content:space-between;padding-bottom:max(36px,env(safe-area-inset-bottom))}
+.scratch{width:min(86vw,340px);margin:6px auto;transform:rotate(-3deg);filter:drop-shadow(0 22px 22px #000a);animation:wobble 5s ease-in-out infinite alternate;user-select:none;-webkit-user-select:none}
+@keyframes wobble{to{transform:rotate(-1.5deg) translateY(-6px)}}
+.sc-card{background:var(--paper);border-radius:8px;overflow:hidden;color:var(--ink)}
+.sc-top{background:var(--red);color:var(--paper);padding:10px 16px 8px;display:flex;justify-content:space-between;font-family:var(--type);font-size:11px;letter-spacing:.12em;text-transform:uppercase}
+.sc-title{font-family:var(--display);font-size:48px;line-height:1;text-transform:uppercase;text-align:center;padding:16px 10px 8px}.sc-title em{font-style:normal;color:var(--red)}
+.sc-zone{position:relative;margin:8px 16px 12px;height:108px;border-radius:6px;background:#14110f;display:grid;place-items:center;overflow:hidden}
+.sc-under{text-align:center;color:var(--yellow);font-family:var(--display);font-size:40px;line-height:1;text-transform:uppercase}.sc-under small{display:block;font-family:var(--type);font-size:11px;letter-spacing:.14em;color:var(--paper);margin-top:8px}
+.sc-zone canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;cursor:grab;transition:opacity .6s}.scratch.done{animation:none;transform:rotate(0) translateY(-8px) scale(1.04);transition:transform .8s var(--ease)}.scratch.done .sc-zone canvas{opacity:0;pointer-events:none}
+.sc-foot{display:flex;justify-content:space-between;gap:8px;padding:0 16px 12px;font-family:var(--type);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:#6b6150}
+.hint{font-family:var(--type);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:0 0 14px;animation:pulse 2.2s ease-in-out infinite}@keyframes pulse{50%{opacity:.35}}
+
+/* GIFTS */
+#gifts{padding-top:16px}#gifts .hero{font-size:clamp(34px,10.5vw,50px)}
+.gift-stage{position:relative;width:100%;height:min(55vh,515px);min-height:470px;margin:12px auto 0;perspective:800px;isolation:isolate}
+.gift-card{position:absolute;left:50%;top:50%;width:clamp(124px,38vw,158px);height:146px;padding:12px 11px 10px;border-radius:3px;text-align:left;display:flex;flex-direction:column;align-items:flex-start;justify-content:space-between;color:var(--ink);background:var(--paper);box-shadow:0 12px 26px #000a;transform:translate(-50%,-50%);opacity:0;transition:transform 1.2s var(--ease),opacity .8s var(--ease),filter .6s;transition-delay:var(--delay);will-change:transform,opacity}
+.gift-card::before{content:"";position:absolute;top:-8px;left:50%;width:50px;height:17px;transform:translateX(-50%) rotate(-3deg);background:#f3cf3acc;box-shadow:0 1px 2px #0004}
+.gift-card:nth-child(3n+2){background:var(--kraft)}.gift-card:nth-child(3n+3){background:#d9d2c0}.gift-card:nth-child(even)::before{background:#e3402ab8;transform:translateX(-50%) rotate(4deg)}
+.gift-card .g-no{font-family:var(--type);font-size:11px;letter-spacing:.06em;color:#6b6150;text-transform:uppercase}
+.gift-card .g-emoji{position:absolute;right:9px;top:26px;font-size:32px;transform:rotate(8deg);filter:drop-shadow(0 3px 3px #0003)}
+.gift-card .g-name{font-family:var(--cond);font-weight:600;text-transform:uppercase;font-size:17px;line-height:1.05;letter-spacing:.01em;max-width:124px;margin-top:auto;padding-bottom:5px}
+.gift-card .g-desc{font-family:var(--body);font-size:11.5px;line-height:1.3;color:#4e4637}
+.gift-stage.fan .gift-card{opacity:1;transform:translate(calc(-50% + var(--fx)),calc(-50% + var(--fy))) rotate(var(--fr)) scale(.95)}
+.gift-stage.float .gift-card{opacity:1;cursor:pointer;transform:translate(calc(-50% + var(--x)),calc(-50% + var(--y))) rotate(var(--r))}
+.gift-stage.float .gift-card:not(.removed){animation:floatCard 4s ease-in-out infinite alternate;animation-delay:var(--shine)}
+.gift-card.removed{opacity:0!important;filter:blur(4px);transform:translate(calc(-50% + var(--x)),calc(-50% + var(--y) - 70px)) rotate(24deg) scale(.4)!important;pointer-events:none;animation:none!important;transition-delay:0s}
+@keyframes floatCard{to{transform:translate(calc(-50% + var(--x)),calc(-50% + var(--y) - 7px)) rotate(calc(var(--r) + 2deg))}}
+.gift-card:nth-child(1){--shine:-.3s}.gift-card:nth-child(2){--shine:-2.7s}.gift-card:nth-child(3){--shine:-1.7s}.gift-card:nth-child(4){--shine:-3.2s}.gift-card:nth-child(5){--shine:-1.1s}.gift-card:nth-child(6){--shine:-2s}
+.gift-status{min-height:64px;color:var(--cream);display:flex;flex-direction:column;align-items:center;gap:10px;font-family:var(--cond);font-weight:500;font-size:19px;letter-spacing:.04em;text-transform:uppercase}
+.status-pips{display:flex;gap:8px}.status-pips span{width:26px;height:4px;background:#ffffff30;border-radius:2px}.status-pips span.off{background:var(--red)}
+
+/* DOORS */
+#doors{padding-top:34px;justify-content:flex-start}#doors .hero{font-size:clamp(38px,11.5vw,54px)}
+.door-row{display:flex;gap:clamp(8px,2.8vw,16px);width:100%;margin:48px auto 30px;justify-content:center}
+.door{position:relative;width:clamp(96px,28vw,140px);height:clamp(170px,48vw,204px);padding:14px 6px;border-radius:3px;border:0;background:var(--paper);color:var(--ink);box-shadow:0 16px 28px #000a;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;transition:transform .3s var(--ease),box-shadow .3s,opacity .3s;transform:rotate(-2deg)}
+.door:nth-child(2){background:var(--kraft);transform:rotate(1.5deg)}.door:nth-child(3){background:#d9d2c0;transform:rotate(-1deg)}
+.door::before{content:"";position:absolute;top:-8px;left:50%;width:46px;height:16px;transform:translateX(-50%) rotate(-3deg);background:#f3cf3acc}
+.door .roman{font-size:42px;line-height:1}.door .card-label{font-family:var(--cond);font-weight:600;text-transform:uppercase;font-size:16px;line-height:1.1;padding:0 6px;text-align:center}
+.door.selected{transform:translateY(-16px) rotate(0) scale(1.06);box-shadow:0 26px 40px #000c,0 0 0 3px var(--yellow)}.door:not(.selected).dim{opacity:.4}
+.choose-confirm{width:min(100%,410px);min-height:138px;animation:rise .4s both}.choose-confirm [hidden]{display:none!important}
+.choice-title{font-family:var(--cond);font-weight:600;text-transform:uppercase;letter-spacing:.03em;font-size:28px;margin:0 0 6px;color:var(--yellow)}.choice-desc{font-size:14px;line-height:1.5;color:var(--muted);margin:0 0 16px}
+.door-footnote{font-family:var(--type);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-top:18px}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+/* FAKE + COUNTDOWN */
+#fake{justify-content:center;gap:14px;min-height:calc(100dvh - 64px)}
+.fake-glow{font-size:72px;line-height:1;animation:bounceIn .7s ease both}@keyframes bounceIn{0%{transform:scale(.5) rotate(-12deg);opacity:0}60%{transform:scale(1.12) rotate(4deg)}100%{transform:none;opacity:1}}
+.fake-title{font-family:var(--display);font-weight:400;text-transform:uppercase;font-size:clamp(38px,11vw,58px);line-height:1;max-width:400px;margin:0}.fake-title em{font-style:normal;color:var(--yellow)}
+.fake-msg{margin:4px 0 0;color:var(--muted);font-size:15px;line-height:1.55;max-width:290px}.fake-note{font-family:var(--type);text-transform:uppercase;letter-spacing:.14em;font-size:20px;color:var(--red);margin-top:18px;transform:rotate(-3deg)}
+#countdown{justify-content:center;gap:18px}.count-meta{font-family:var(--type);color:var(--yellow);letter-spacing:.14em;text-transform:uppercase;font-size:13px}
+#countnum{font-family:var(--display);font-size:clamp(190px,56vw,300px);line-height:.9;color:var(--paper);text-shadow:6px 6px 0 var(--red);animation:countZoom .8s ease-out both}@keyframes countZoom{from{transform:scale(1.6);opacity:0}to{transform:none;opacity:1}}
+.count-title{font-family:var(--cond);font-weight:600;text-transform:uppercase;letter-spacing:.06em;font-size:30px;transform:rotate(-2deg)}
+
+/* FINAL */
+#final{padding-top:4px;padding-bottom:max(40px,env(safe-area-inset-bottom));gap:10px;overflow:visible}
+.final-kicker{font-family:var(--type);text-transform:uppercase;letter-spacing:.16em;font-size:17px;color:var(--yellow);transform:rotate(-3deg);margin-top:2px}
+.estopa-logo{font-family:var(--display);font-weight:400;text-transform:uppercase;font-size:clamp(88px,27vw,138px);line-height:.95;color:var(--paper);text-shadow:5px 5px 0 var(--red);margin:0;transform:skewX(-5deg) rotate(-2deg)}
+.final-tag{font-family:var(--cond);font-weight:500;text-transform:uppercase;letter-spacing:.04em;font-size:24px;line-height:1.15;max-width:330px;color:var(--cream)}
+.final-phrase{font-family:var(--body);font-style:italic;font-size:14px;color:var(--muted);max-width:310px;line-height:1.5;margin:2px 0 8px}
+.ticket{width:min(100%,360px);margin:14px auto 8px;position:relative;text-align:left;background:var(--paper);color:var(--ink);border-radius:6px;box-shadow:0 24px 60px #000b;transform:rotate(-1.4deg);animation:ticketCome .8s var(--ease) both}
+@keyframes ticketCome{from{transform:translateY(46px) rotate(-5deg) scale(.88);opacity:0}to{transform:rotate(-1.4deg);opacity:1}}
+.t-head{background:var(--ink);color:var(--paper);padding:16px 20px 16px;border-radius:6px 6px 0 0}
+.t-top{display:flex;justify-content:space-between;gap:10px;font-family:var(--type);font-size:11px;letter-spacing:.08em;color:var(--yellow);text-transform:uppercase}
+.t-name{font-family:var(--display);font-size:86px;line-height:1;margin-top:6px;color:var(--yellow);text-shadow:3px 3px 0 var(--red)}
+.t-tour{font-family:var(--type);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--paper);margin-top:4px}
+.t-perf{position:relative;height:0;border-top:2px dashed #14110f66}.t-perf::before,.t-perf::after{content:"";position:absolute;top:-11px;width:20px;height:20px;border-radius:50%;background:var(--bg)}.t-perf::before{left:-11px}.t-perf::after{right:-11px}
+.t-body{padding:56px 20px 16px;display:grid;gap:12px}
+.t-row small{display:block;font-family:var(--type);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#6b6150;margin-bottom:2px}.t-row strong{font-family:var(--cond);font-weight:500;font-size:21px;line-height:1.2;letter-spacing:.01em}
+.t-foot{display:flex;justify-content:space-between;align-items:baseline;gap:10px;border-top:2px solid var(--ink);padding-top:10px;margin-top:4px;font-family:var(--cond);font-weight:700;text-transform:uppercase;font-size:17px;letter-spacing:.04em}.t-foot b{font-weight:400;color:var(--red)}
+.stamp{position:absolute;right:14px;top:170px;border:3px solid var(--red);border-radius:4px;color:var(--red);font-family:var(--type);font-size:30px;letter-spacing:.06em;padding:0 10px;transform:rotate(-11deg);opacity:.92;pointer-events:none}
+.letter{position:relative;width:min(100%,350px);margin:22px auto 6px;text-align:left;background:var(--paper);color:var(--ink);padding:26px 20px 14px;transform:rotate(.9deg);box-shadow:0 14px 34px #000a;background-image:repeating-linear-gradient(transparent 0 27px,#9c8f7440 27px 28px);background-position:0 18px}
+.letter::before{content:"";position:absolute;top:-9px;left:50%;width:70px;height:18px;transform:translateX(-50%) rotate(2deg);background:#f3cf3acc}
+.letter p{margin:0 0 28px;font-family:var(--body);font-weight:400;font-size:14.5px;line-height:28px;opacity:0;transform:translateY(10px);transition:opacity .9s ease,transform .9s ease;transition-delay:calc(var(--i)*1.6s)}.letter.show p{opacity:1;transform:none}
+.letter p:first-child{font-family:var(--cond);font-weight:700;text-transform:uppercase;letter-spacing:.04em;font-size:24px;color:var(--red)}.letter .sign{font-family:var(--cond);font-weight:600;text-transform:uppercase;letter-spacing:.06em;font-size:22px;text-align:right;margin:0 0 6px;color:var(--ink)}
+.days{font-family:var(--cond);font-weight:600;text-transform:uppercase;letter-spacing:.05em;font-size:22px;color:var(--yellow);margin:12px 0 2px;transform:rotate(-1.5deg)}
+.final-actions{display:flex;flex-direction:column;align-items:center;gap:12px;width:min(100%,340px);margin:14px auto 0}.final-actions .btn-primary{width:100%}.final-actions .row{display:flex;gap:10px;width:100%}.final-actions .row .btn{flex:1;padding:0 10px}
+.toast{position:fixed;z-index:50;left:50%;bottom:calc(22px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(25px);opacity:0;pointer-events:none;background:var(--paper);color:var(--ink);border-radius:4px;padding:12px 16px;text-align:center;font-family:var(--body);font-size:13px;width:max-content;max-width:90vw;box-shadow:0 10px 40px #0008;transition:opacity .25s,transform .25s}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.skip{position:fixed;right:14px;bottom:calc(14px + env(safe-area-inset-bottom));z-index:30}
+#confetti{position:fixed;inset:0;pointer-events:none;z-index:20;width:100%;height:100%}.screen-flash{position:fixed;inset:0;pointer-events:none;z-index:15;background:#fff3d2;opacity:0}.screen-flash.go{animation:flash .6s ease-out both}@keyframes flash{0%{opacity:0}15%{opacity:.8}100%{opacity:0}}
+.yt{position:relative;width:min(100%,350px);margin:22px auto 2px;background:var(--paper);color:var(--ink);padding:10px 10px 12px;transform:rotate(1deg);box-shadow:0 14px 34px #000a}.yt::before{content:"";position:absolute;top:-9px;left:50%;width:64px;height:18px;transform:translateX(-50%) rotate(-3deg);background:#e3402acc}.yt p{margin:0 0 8px;font-family:var(--type);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#6b6150;text-align:left}.yt iframe{display:block;width:100%;aspect-ratio:16/9;border:0;background:#000}
+.voucher{display:none;width:min(100%,360px);background:var(--paper);color:var(--ink);border-radius:6px;box-shadow:0 22px 50px #000b;text-align:left;transform:rotate(-1deg);position:relative}
+#fake.v-mode .voucher{display:block;animation:rise .45s both}
+#fake.v-mode .fake-glow,#fake.v-mode #fakeEy,#fake.v-mode #fakeTitle,#fake.v-mode #fakeMsg,#fake.v-mode #fakeNote{display:none}
+.v-top{display:flex;justify-content:space-between;background:var(--ink);color:var(--yellow);padding:9px 16px;font-family:var(--type);font-size:11px;letter-spacing:.12em;text-transform:uppercase;border-radius:6px 6px 0 0}
+.v-head{display:flex;align-items:center;gap:12px;padding:16px 16px 8px}.v-emoji{font-size:40px;line-height:1}.v-head h3{margin:0;font-family:var(--display);font-weight:400;text-transform:uppercase;font-size:30px;line-height:1}
+.v-rows{padding:6px 16px 10px;display:grid;gap:11px}.v-rows small{display:block;font-family:var(--type);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:#6b6150}.v-rows span{display:block;margin-top:1px;font-family:var(--cond);font-weight:500;font-size:17px;line-height:1.2}
+.v-timer{padding:2px 16px 14px}.v-barwrap{height:8px;background:#14110f22;border-radius:4px;overflow:hidden}.v-bar{height:100%;background:var(--red);width:100%}.v-bar.run{animation:vbar 10s linear forwards}@keyframes vbar{to{width:0}}
+.v-count{display:block;margin-top:8px;font-family:var(--type);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--red)}
+#fake .voucher.shake{animation:vshake .08s linear infinite}@keyframes vshake{0%{transform:translate(2px,1px) rotate(-1deg)}50%{transform:translate(-2px,-1px) rotate(1deg)}100%{transform:translate(1px,-2px) rotate(-1deg)}}
+#fake .voucher.boom{animation:vboom .6s ease-out forwards}@keyframes vboom{0%{transform:scale(1)}18%{transform:scale(1.2) rotate(3deg);filter:brightness(2.4)}100%{transform:scale(2.7) rotate(-13deg);opacity:0;filter:blur(14px)}}
+.shell.quake{animation:quake .75s cubic-bezier(.36,.07,.19,.97) both}@keyframes quake{10%,90%{transform:translate(-3px,2px)}20%,80%{transform:translate(7px,-4px)}30%,50%,70%{transform:translate(-14px,7px) rotate(-.7deg)}40%,60%{transform:translate(14px,-7px) rotate(.7deg)}}
+.shock{position:fixed;left:50%;top:48%;width:40px;height:40px;margin:-20px 0 0 -20px;border-radius:50%;border:14px solid #fff;pointer-events:none;z-index:16;opacity:0}.shock.go{animation:shock .9s ease-out both}@keyframes shock{0%{transform:scale(.2);opacity:1}100%{transform:scale(36);opacity:0;border-width:1px}}
+.screen-flash.go{animation:flash2 1s ease-out both}@keyframes flash2{0%{opacity:0}6%{opacity:1;background:#fff}30%{opacity:.6;background:#ffb347}100%{opacity:0}}
+@media (min-width:560px){.shell{border-left:1px solid #ffffff14;border-right:1px solid #ffffff14}.gift-stage{height:520px}}
+@media (max-width:360px){.shell{padding-left:14px;padding-right:14px}.gift-stage{min-height:450px}.hero{font-size:36px}}
+@media (max-height:730px){#gifts{padding-top:2px}.gift-stage{min-height:450px;height:450px}.sub{margin-top:8px}#doors{padding-top:10px}.door-row{margin-top:24px;margin-bottom:18px}.scratch{width:min(78vw,310px)}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.08s!important}}
+</style>
+</head>
+<body>
+<div id="backdrop" aria-hidden="true"></div><div id="grain" aria-hidden="true"></div>
+<canvas id="confetti" aria-hidden="true"></canvas><div class="screen-flash" id="flash" aria-hidden="true"></div>
+<div class="shock" id="shock" aria-hidden="true"></div>
+<div class="shell" id="shell">
+<header class="topbar"><div class="wordmark">Per a la <b>Míriam</b></div><button class="sound" id="soundToggle" aria-label="Silenciar" aria-pressed="true"><span aria-hidden="true">♫</span></button></header>
+<button class="btn btn-outline skip" id="skipBtn" hidden>Salta ↷</button>
+<main id="main">
+
+<section id="intro" class="scene active" aria-label="El rasca i guanya">
+<div><p class="eyebrow">Una cosa per a tu</p><h1 class="hero">Míriam,<br><em>això és per a tu.</em></h1><p class="sub">Un cartró de rasca i guanya fet a casa. Rasca, si t’atreveixes.</p></div>
+<div class="scratch" id="scratch"><div class="sc-card"><div class="sc-top"><span>Sorteig especial</span><span>Nº 0001</span></div><div class="sc-title">Rasca <em>i guanya</em></div><div class="sc-zone" id="scZone"><div class="sc-under">Sorpresa!<small>sí, és per a tu</small></div><canvas id="scCanvas" aria-hidden="true"></canvas></div><div class="sc-foot"><span>Un sol premi</span><span>Només per a la Míriam</span></div></div></div>
+<div><p class="hint">Rasca la zona de plata amb el dit</p><button class="btn btn-primary" id="openBtn">Ensenya-m’ho</button></div>
+</section>
+
+<section id="gifts" class="scene" aria-label="Els sis regals">
+<p class="eyebrow">El joc comença</p><h2 class="hero">Sis regals.<br><em>Només un és el bo.</em></h2><p class="sub">Descarta’n tres. Toca els que NO vols (i no facis trampes).</p>
+<div id="giftStage" class="gift-stage" aria-live="off">
+<div class="gift-card" style="--fx:-90px;--fy:4px;--fr:-37deg;--x:-86px;--y:-152px;--r:-4deg;--delay:.1s"><span class="g-no">01 · Impossible</span><span class="g-emoji">🚀</span><span class="g-name">Sopar a la Lluna</span><span class="g-desc">Taula per a dos. Gravetat, poca.</span></div>
+<div class="gift-card" style="--fx:-58px;--fy:-6px;--fr:-22deg;--x:86px;--y:-152px;--r:3deg;--delay:.2s"><span class="g-no">02 · Possible</span><span class="g-emoji">🧳</span><span class="g-name">Escapada a cegues</span><span class="g-desc">Fes la maleta. El destí és secret.</span></div>
+<div class="gift-card" style="--fx:-24px;--fy:-12px;--fr:-7deg;--x:-86px;--y:0px;--r:3deg;--delay:.3s"><span class="g-no">03 · De broma</span><span class="g-emoji">🧦</span><span class="g-name">Mitjons amb el meu retrat</span><span class="g-desc">Perquè em tinguis als teus peus.</span></div>
+<div class="gift-card" style="--fx:24px;--fy:-12px;--fr:8deg;--x:86px;--y:0px;--r:-3deg;--delay:.4s"><span class="g-no">04 · Impossible</span><span class="g-emoji">🏰</span><span class="g-name">Un castell al teu nom</span><span class="g-desc">El majordom ja practica «Míriam».</span></div>
+<div class="gift-card" style="--fx:58px;--fy:-5px;--fr:23deg;--x:-86px;--y:152px;--r:-3deg;--delay:.5s"><span class="g-no">05 · Possible</span><span class="g-emoji">🫧</span><span class="g-name">Un dia de spa</span><span class="g-desc">La teva única feina: no fer res.</span></div>
+<div class="gift-card" style="--fx:90px;--fy:4px;--fr:38deg;--x:86px;--y:152px;--r:4deg;--delay:.6s"><span class="g-no">06 · De broma</span><span class="g-emoji">🐈</span><span class="g-name">Màster en idioma gat</span><span class="g-desc">El «mèu» té més d’un significat.</span></div>
+</div><div class="gift-status" aria-live="polite"><span id="giftStatus">Mira-ho bé...</span><div class="status-pips" id="statusPips"><span></span><span></span><span></span></div></div>
+</section>
+
+<section id="doors" class="scene" aria-label="Escull una targeta">
+<p class="eyebrow">Només en queden tres</p><h2 class="hero">Ara tria.<br><em>Sense pànic.</em></h2><p class="sub">Una targeta. Una sola. Pensa-t’ho bé.</p>
+<div class="door-row" id="doorRow"><button class="door" data-door="0"><span class="roman"></span><span class="card-label"></span></button><button class="door" data-door="1"><span class="roman"></span><span class="card-label"></span></button><button class="door" data-door="2"><span class="roman"></span><span class="card-label"></span></button></div>
+<div class="choose-confirm" id="chooseConfirm" aria-live="polite"><p class="choice-title" id="choiceTitle">Quina t’agrada més?</p><p class="choice-desc" id="choiceDesc">Toca la targeta que vulguis descobrir.</p><div class="btn-row" id="choiceActions" hidden><button class="btn btn-primary" id="keepBtn">Me la quedo</button><button class="btn btn-outline" id="changeBtn">Vull canviar</button></div></div><p class="door-footnote">Només te’n pots quedar una.</p>
+</section>
+
+<section id="fake" class="scene" aria-label="Una última sorpresa"><div class="voucher" id="voucher"><div class="v-top"><span>Val regal oficial</span><span id="vNo"></span></div><div class="v-head"><span class="v-emoji" id="vEmoji" aria-hidden="true"></span><h3 id="vName"></h3></div><div class="v-rows" id="vRows"></div><div class="v-timer"><div class="v-barwrap"><div class="v-bar" id="vBar"></div></div><span class="v-count" id="vCount" aria-live="polite"></span></div></div><span class="fake-glow" id="fakeGlow" aria-hidden="true">✦</span><p class="eyebrow" id="fakeEy">Un moment...</p><h2 class="fake-title" id="fakeTitle"></h2><p class="fake-msg" id="fakeMsg"></p><div class="fake-note" id="fakeNote"></div></section>
+<section id="countdown" class="scene" aria-label="Compte enrere"><p class="count-meta">Això va de debò en...</p><div id="countnum" aria-live="assertive">3</div><p class="count-title">Agafa’t fort.</p></section>
+
+<section id="final" class="scene" aria-label="La gran revelació">
+<div class="final-kicker">Sorpresa, Míriam!</div><h2 class="estopa-logo">Estopa</h2><div class="final-tag">T’he promès una entrada per veure’ls.</div><p class="final-phrase">«Dos germans a l’escenari. Dos germans a la graderia.»</p>
+<article class="ticket" id="giftTicket" aria-label="Val per una entrada d'Estopa">
+<div class="t-head"><div class="t-top"><span>El nostre concert</span><span>Barcelona · 2027</span></div><div class="t-name">ESTOPA</div><div class="t-tour">La Maketa · Gira 2027</div></div>
+<div class="t-perf"></div>
+<div class="t-body"><div class="t-row"><small>Data prevista</small><strong id="tWhen"></strong></div><div class="t-row"><small>Lloc</small><strong id="tPlace"></strong></div><div class="t-row"><small>Venda d’entrades</small><strong id="tSale"></strong></div><div class="t-foot"><span>Per a Míriam</span><b id="tTickets"></b></div></div>
+<div class="stamp" aria-hidden="true">PROMESA</div>
+</article>
+<div class="yt" id="ytBox" hidden><p>♫ Sona: Estopa · «Vino tinto»</p></div>
+<section class="letter" id="letter" aria-label="Una carta per a tu"></section>
+<p class="days" id="daysLeft" hidden></p>
+<div class="final-actions"><button class="btn btn-primary" id="calBtn">＋ Afegeix-ho al calendari</button><div class="row"><button class="btn btn-outline" id="saveBtn">↓ Desa-la</button><button class="btn btn-outline" id="shareBtn">↗ Comparteix</button></div><button class="btn-text" id="replayBtn">↺ Torna a començar</button></div>
+</section>
+</main></div><div class="toast" id="toast" role="status"></div>
+<script>
+(()=>{'use strict';
+/* ================= PERSONALITZA AQUÍ ================= */
+const GIFT={
+ to:'Míriam', from:'El teu germà',
+ concert:{date:'2027-06-18',dateLabel:'Divendres, 18 de juny de 2027',place:'Estadi Olímpic, Barcelona'},
+ // Venda general anunciada per la banda: 17 nov 2026, 22:22 (hora peninsular). Verifica-ho abans d'enviar.
+ sale:{iso:'2026-11-17T22:22:00+01:00',label:'Dimarts, 17 de novembre · 22.22 h'},
+ ticketLabel:'Val per 1 entrada',
+ vouchers:[
+  {no:'0417',rows:[['Lloc','Mare Tranquillitatis, Lluna (taula 7, vora el cràter)'],['Data','Pendent de permís de la NASA'],['Inclou','Sopar per a dos · vistes a la Terra · gravetat 1/6'],['Condicions','Casc obligatori. Sense reclamacions per falta d’oxigen.']]},
+  {no:'0418',rows:[['Lloc','Secret. T’ho dic a l’aeroport.'],['Data','A acordar (no val dir que estàs ocupada)'],['Inclou','2 nits · allotjament · transport'],['Condicions','Només maleta de mà. Prohibit preguntar «on anem?» més de 3 cops.']]},
+  {no:'0419',rows:[['Lloc','Recollida a casa del teu germà'],['Data','Lliurament immediat'],['Inclou','1 parell · talla única · retrat molt ben aconseguit'],['Condicions','No s’admeten canvis ni devolucions. Obligatori lluir-los per Nadal.']]},
+  {no:'0420',rows:[['Lloc','Escòcia, enmig de la boira (sense coordenades)'],['Data','Escriptura pendent de signatura'],['Inclou','Castell · majordom · fantasma de sèrie'],['Condicions','Calefacció no inclosa. Visites només amb cita prèvia.']]},
+  {no:'0421',rows:[['Lloc','Spa a escollir per tu'],['Data','Un dia sencer, sense rellotge'],['Inclou','Massatge · circuit termal · berenar'],['Condicions','Prohibit mirar el mòbil i parlar de feina.']]},
+  {no:'0422',rows:[['Lloc','Universitat Felina de Barcelona (campus nocturn)'],['Data','Matrícula oberta fins que el gat digui'],['Inclou','2 cursos · títol amb petjada oficial'],['Condicions','Classes a les 3 de la matinada. Assistència obligatòria.']]}
+ ],
+ letter:[
+  'Míriam,',
+  'Havia de regalar-te alguna cosa i vaig pensar: què faria una persona normal? Un perfum. I què faig jo? Un rasca i guanya.',
+  'Les entrades surten a la venda el 17 de novembre a les 22:22. Aquella nit jo seré a la cua com un boig. Si les pesquem, una és teva. Ho prometo.',
+  'Estopa són dos germans de barri. Jo només en tinc una de germana, i vull anar-hi a cantar amb ella.',
+  'Ves escalfant la veu.'
+ ]
+};
+// Cançó: «Vino tinto» (videoclip oficial d'Estopa, canal EstopaVEVO). S'incrusta i arrenca sola en obrir la targeta.
+// start/end = segons del fragment (ajusta start perquè caigui al cor). Només funciona publicada en https i amb internet.
+// Alternativa sense internet: posa un MP3 teu a audio/estopa.mp3 i escriu src:'audio/estopa.mp3' (té prioritat).
+const FINAL_MUSIC={youtube:'NOjgze5Nmzc',start:44,end:74,src:'',startSeconds:0,durationSeconds:30,fadeSeconds:2.5};
+/* ===================================================== */
+const $=id=>document.getElementById(id);
+let stage='intro',timers=[],selected=-1,started=false,muted=false,audio=null,confettiId=0,confettiEnd=0,confettiBits=[],plays=0,removed=[],doorGifts=[];
+const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const scenes=[...document.querySelectorAll('.scene')];
+function later(fn,ms){const id=setTimeout(fn,reduceMotion?Math.min(150,ms):ms);timers.push(id);return id}
+function stopTimers(){timers.forEach(clearTimeout);timers=[]}
+function goTo(name){stage=name;scenes.forEach(s=>{s.classList.toggle('active',s.id===name);s.setAttribute('aria-hidden',s.id===name?'false':'true')});window.scrollTo({top:0,behavior:'instant'});if(audio)audio.phase=name;$('skipBtn').hidden=!(plays>0&&(name==='fake'||name==='countdown'))}
+function say(t){$('giftStatus').textContent=t}
+function toast(t){$('toast').textContent=t;$('toast').classList.add('show');setTimeout(()=>$('toast').classList.remove('show'),3200)}
+/* Banda sonora instrumental original generada amb oscil·ladors. Cap fitxer extern. */
+class OriginalScore{constructor(){const C=window.AudioContext||window.webkitAudioContext;if(!C)return;this.ctx=new C();this.out=this.ctx.createGain();this.out.gain.value=.085;this.out.connect(this.ctx.destination);this.phase='intro';this.step=0;this.period=325;this.loop=null}async start(){if(!this.ctx)return;try{await this.ctx.resume()}catch(e){return}if(!this.loop){this.tick();this.loop=setInterval(()=>this.tick(),this.period)}}toggle(off){if(!this.out)return;this.out.gain.setTargetAtTime(off?0:.085,this.ctx.currentTime,.08)}note(f,d=.23,vol=.18,type='sine',when=0){if(!this.ctx||this.ctx.state!=='running')return;const t=this.ctx.currentTime+when;let o=this.ctx.createOscillator(),g=this.ctx.createGain();o.type=type;o.frequency.value=f;g.gain.setValueAtTime(.00001,t);g.gain.exponentialRampToValueAtTime(Math.max(.00002,vol),t+.02);g.gain.exponentialRampToValueAtTime(.00001,t+d);o.connect(g);g.connect(this.out);o.start(t);o.stop(t+d+.02)}bell(f,v=.12){this.note(f,.54,v,'sine');this.note(f*2,.24,v*.28,'triangle')}swoosh(){if(!this.ctx||this.ctx.state!=='running')return;const t=this.ctx.currentTime,sz=Math.floor(this.ctx.sampleRate*.19),b=this.ctx.createBuffer(1,sz,this.ctx.sampleRate),arr=b.getChannelData(0);for(let i=0;i<sz;i++)arr[i]=(Math.random()*2-1)*Math.pow(1-i/sz,2);const n=this.ctx.createBufferSource(),filter=this.ctx.createBiquadFilter(),g=this.ctx.createGain();filter.type='highpass';filter.frequency.value=450;n.buffer=b;g.gain.value=.22;n.connect(filter);filter.connect(g);g.connect(this.out);n.start(t);n.stop(t+.2)}impact(){this.note(110,.85,.4,'sawtooth');this.note(165,.8,.18,'triangle');this.bell(440,.2);this.swoosh()}tick(){if(!this.ctx||this.ctx.state!=='running'||muted)return;let i=this.step++,p=this.phase;const chords=[[220,261.63,329.63,392],[196,246.94,293.66,369.99],[174.61,220,261.63,349.23],[196,246.94,293.66,392]];const chord=chords[Math.floor(i/8)%4];if(p==='gifts'||p==='doors'){if(i%2===0){this.note(chord[(i/2)%4|0]*2,.22,.10,'triangle');if(i%8===0)this.note(chord[0]/2,.48,.17,'sine')}}else if(p==='fake'||p==='countdown'){this.note(i%2===0?110:82.41,.12,.22,'triangle');if(i%4===0)this.bell(587.33,.05)}else if(p==='final'){if(i%8===0){this.note(chord[0]/2,1.3,.24,'triangle');this.note(chord[1],1.25,.12,'sine');this.note(chord[3],1.2,.1,'sine')}this.note(chord[(i*3)%4]*2,.33,.11,'triangle')}}}
+
+OriginalScore.prototype.boom=function(){if(!this.ctx||this.ctx.state!=='running')return;const t=this.ctx.currentTime,sz=Math.floor(this.ctx.sampleRate*1.1),b=this.ctx.createBuffer(1,sz,this.ctx.sampleRate),d=b.getChannelData(0);for(let i=0;i<sz;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/sz,1.6);const n=this.ctx.createBufferSource(),f=this.ctx.createBiquadFilter(),g=this.ctx.createGain();f.type='lowpass';f.frequency.setValueAtTime(5000,t);f.frequency.exponentialRampToValueAtTime(120,t+.9);n.buffer=b;g.gain.setValueAtTime(2.6,t);g.gain.exponentialRampToValueAtTime(.01,t+1);n.connect(f);f.connect(g);g.connect(this.out);n.start(t);const o=this.ctx.createOscillator(),og=this.ctx.createGain();o.type='sine';o.frequency.setValueAtTime(130,t);o.frequency.exponentialRampToValueAtTime(28,t+.7);og.gain.setValueAtTime(1.8,t);og.gain.exponentialRampToValueAtTime(.01,t+.8);o.connect(og);og.connect(this.out);o.start(t);o.stop(t+.85);this.impact()};
+/* Fragment de cançó: sona automàticament a la revelació. Si no hi ha MP3, continua la música original. */
+const finalTrack=new Audio();finalTrack.preload='auto';if(FINAL_MUSIC.src)finalTrack.src=FINAL_MUSIC.src;
+let primed=false,musicAttempt=0,fragTimer=null,fadeTimer=null,customMusic=false;
+function primeTrack(){if(primed||!FINAL_MUSIC.src)return;primed=true;finalTrack.muted=true;const pr=finalTrack.play();if(pr&&pr.then)pr.then(()=>{finalTrack.pause();finalTrack.currentTime=0;finalTrack.muted=false}).catch(()=>{finalTrack.muted=false})}
+function stopFinalMusic(){musicAttempt++;clearTimeout(fragTimer);clearInterval(fadeTimer);try{finalTrack.pause()}catch(e){}ytCmd('pauseVideo');customMusic=false;if(audio)audio.toggle(muted)}
+function fadeOut(attempt){const sec=Math.max(.2,FINAL_MUSIC.fadeSeconds||2),steps=Math.round(sec*10);let i=0;clearInterval(fadeTimer);fadeTimer=setInterval(()=>{if(attempt!==musicAttempt){clearInterval(fadeTimer);return}i++;try{finalTrack.volume=Math.max(0,1-i/steps)}catch(e){}if(i>=steps){clearInterval(fadeTimer);stopFinalMusic()}},100)}
+async function playFinalMusic(){
+ if(!FINAL_MUSIC.src){playYouTube();return}
+ const attempt=++musicAttempt;clearTimeout(fragTimer);clearInterval(fadeTimer);
+ if(stage!=='final'||muted)return;
+ try{
+  finalTrack.currentTime=Math.max(0,Number(FINAL_MUSIC.startSeconds)||0);finalTrack.muted=false;try{finalTrack.volume=1}catch(e){}
+  await finalTrack.play();
+  if(attempt!==musicAttempt||stage!=='final'||muted){finalTrack.pause();return}
+  customMusic=true;if(audio)audio.toggle(true);
+  const dur=Math.max(3,Number(FINAL_MUSIC.durationSeconds)||30),fade=Math.min(FINAL_MUSIC.fadeSeconds||2,dur-1);
+  fragTimer=setTimeout(()=>fadeOut(attempt),(dur-fade)*1000);
+ }catch(e){customMusic=false;if(audio)audio.toggle(muted)}
+}
+let ytFrame=null;
+function ytCmd(f,a){if(ytFrame&&ytFrame.contentWindow){try{ytFrame.contentWindow.postMessage(JSON.stringify({event:'command',func:f,args:a||''}),'*')}catch(e){}}}
+let ytDead=false;
+function ytFail(){ytDead=true;if(ytFrame){ytFrame.remove();ytFrame=null}$('ytBox').hidden=true;customMusic=false;if(audio)audio.toggle(muted)}
+function playYouTube(){if(ytDead||stage!=='final'||muted||!FINAL_MUSIC.youtube)return;if(!/^https?:$/.test(location.protocol))return;
+ if(ytFrame){ytCmd('seekTo',[FINAL_MUSIC.start,true]);ytCmd('playVideo');return}
+ const q=new URLSearchParams({autoplay:'1',start:String(FINAL_MUSIC.start),end:String(FINAL_MUSIC.end),playsinline:'1',rel:'0',modestbranding:'1',enablejsapi:'1'});
+ ytFrame=document.createElement('iframe');ytFrame.src='https://www.youtube-nocookie.com/embed/'+FINAL_MUSIC.youtube+'?'+q;ytFrame.title='Estopa · Vino tinto (videoclip oficial)';ytFrame.allow='autoplay; encrypted-media; picture-in-picture';ytFrame.referrerPolicy='strict-origin-when-cross-origin';ytFrame.setAttribute('allowfullscreen','');
+ ytFrame.addEventListener('load',()=>{try{ytFrame.contentWindow.postMessage(JSON.stringify({event:'listening',id:1}),'*')}catch(e){}});
+ $('ytBox').hidden=false;$('ytBox').append(ytFrame)}
+window.addEventListener('message',e=>{if(!ytFrame||e.source!==ytFrame.contentWindow)return;let d=e.data;if(typeof d==='string'){try{d=JSON.parse(d)}catch(_){return}}if(!d)return;if(d.event==='onError'){ytFail();return}let st=null;if(d.event==='onStateChange')st=d.info;else if(d.event==='infoDelivery'&&d.info&&typeof d.info.playerState==='number')st=d.info.playerState;if(st===1){customMusic=true;if(audio)audio.toggle(true)}else if(st===0||st===2){customMusic=false;if(audio)audio.toggle(muted)}});
+finalTrack.addEventListener('ended',()=>stopFinalMusic());
+function audioStart(){if(!audio)audio=new OriginalScore();if(audio){audio.start();audio.toggle(muted||customMusic)}}
+function soundClick(){muted=!muted;const b=$('soundToggle');b.setAttribute('aria-pressed',String(!muted));b.setAttribute('aria-label',muted?'Activar el so':'Silenciar');if(muted){stopFinalMusic()}else{if(started)audioStart();if(stage==='final')playFinalMusic()}if(audio)audio.toggle(muted||customMusic)}
+$('soundToggle').addEventListener('click',soundClick);
+
+/* Rasca i guanya */
+function openCard(){if(started)return;started=true;audioStart();primeTrack();$('openBtn').disabled=true;$('scratch').classList.add('done');if(audio)audio.bell(659.25,.28);later(startGifts,1700)}
+const sc=$('scCanvas');let scCtx=null,scDown=false,scMoves=0;
+function scInit(){const r=$('scZone').getBoundingClientRect(),dpr=Math.min(devicePixelRatio||1,2);if(!r.width)return;sc.width=Math.round(r.width*dpr);sc.height=Math.round(r.height*dpr);scMoves=0;scCtx=sc.getContext('2d');scCtx.globalCompositeOperation='source-over';const g=scCtx.createLinearGradient(0,0,sc.width,sc.height);g.addColorStop(0,'#c9ccd1');g.addColorStop(.5,'#eef0f3');g.addColorStop(1,'#a9adb4');scCtx.fillStyle=g;scCtx.fillRect(0,0,sc.width,sc.height);for(let i=0;i<260;i++){scCtx.fillStyle='rgba(0,0,0,'+(Math.random()*.08)+')';scCtx.fillRect(Math.random()*sc.width,Math.random()*sc.height,2*dpr,2*dpr)}scCtx.fillStyle='#6b6f76';scCtx.font=(28*dpr)+'px Anton,Impact,sans-serif';scCtx.textAlign='center';scCtx.textBaseline='middle';scCtx.fillText('RASCA AQUÍ',sc.width/2,sc.height/2)}
+function scScratch(e){if(!scCtx||started)return;const r=sc.getBoundingClientRect(),k=sc.width/r.width;scCtx.globalCompositeOperation='destination-out';scCtx.beginPath();scCtx.arc((e.clientX-r.left)*k,(e.clientY-r.top)*k,22*k,0,7);scCtx.fill();if(++scMoves%6===0)scCheck()}
+function scCheck(){if(started)return;const d=scCtx.getImageData(0,0,sc.width,sc.height).data;let c=0,t=0;for(let i=3;i<d.length;i+=64){t++;if(d[i]<40)c++}if(c/t>.42)openCard()}
+sc.addEventListener('pointerdown',e=>{scDown=true;try{sc.setPointerCapture(e.pointerId)}catch(_){}scScratch(e)});
+sc.addEventListener('pointermove',e=>{if(scDown)scScratch(e)});
+const scUp=()=>{scDown=false;audioStart();primeTrack();if(scCtx)scCheck()};
+sc.addEventListener('pointerup',scUp);sc.addEventListener('pointercancel',scUp);
+$('openBtn').addEventListener('click',openCard);
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(scInit);else scInit();
+addEventListener('resize',()=>{if(!started)scInit()});
+
+/* Joc: ella descarta tres regals i n'escull un dels tres que queden */
+const cardEls=()=>[...document.querySelectorAll('.gift-card')];
+const gName=c=>c.querySelector('.g-name').textContent,gEmoji=c=>c.querySelector('.g-emoji').textContent;
+function startGifts(){goTo('gifts');removed=[];const area=$('giftStage');area.className='gift-stage';cardEls().forEach(el=>el.classList.remove('removed'));[...$('statusPips').children].forEach(n=>n.classList.remove('off'));say('Mira-ho bé...');later(()=>area.classList.add('fan'),180);later(()=>{area.classList.remove('fan');area.classList.add('float');say('Toca els 3 que NO vols')},1400)}
+function discard(i){const area=$('giftStage');if(!area.classList.contains('float')||removed.includes(i)||removed.length>=3)return;removed.push(i);cardEls()[i].classList.add('removed');$('statusPips').children[removed.length-1].classList.add('off');if(audio)audio.swoosh();if(removed.length<3){say('Adeu, '+gName(cardEls()[i])+'... En queden '+(6-removed.length))}else{say('Només en queden tres...');if(audio)audio.bell(523.25,.17);later(showDoors,1600)}}
+cardEls().forEach((el,i)=>{el.setAttribute('role','button');el.tabIndex=0;el.setAttribute('aria-label','Descarta: '+gName(el));el.addEventListener('click',()=>discard(i));el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();discard(i)}})});
+function showDoors(){goTo('doors');selected=-1;doorGifts=cardEls().map((_,i)=>i).filter(i=>!removed.includes(i));document.querySelectorAll('.door').forEach((el,k)=>{const c=cardEls()[doorGifts[k]];el.classList.remove('selected','dim');el.querySelector('.roman').textContent=gEmoji(c);el.querySelector('.card-label').textContent=gName(c);el.setAttribute('aria-label','Escull: '+gName(c))});$('choiceActions').hidden=true;$('choiceTitle').textContent='Quina t’agrada més?';$('choiceDesc').textContent='Toca la targeta que vulguis descobrir.';if(audio)audio.bell(440,.1)}
+function selectDoor(n){selected=n;document.querySelectorAll('.door').forEach((el,i)=>{el.classList.toggle('selected',i===n);el.classList.toggle('dim',i!==n)});$('choiceTitle').textContent='N’estàs segura?';$('choiceDesc').textContent='Has triat «'+gName(cardEls()[doorGifts[n]])+'». Pots mantenir-la o canviar d’opinió.';$('choiceActions').hidden=false;if(audio)audio.bell([440,493.88,523.25][n],.16)}
+document.querySelectorAll('.door').forEach(b=>b.addEventListener('click',()=>selectDoor(+b.dataset.door)));
+$('changeBtn').addEventListener('click',()=>{selected=-1;document.querySelectorAll('.door').forEach(el=>el.classList.remove('selected','dim'));$('choiceTitle').textContent='Última oportunitat!';$('choiceDesc').textContent='Tria una altra targeta. Segueix el teu instint!';$('choiceActions').hidden=true;if(audio)audio.swoosh()});
+function twist(){$('fake').classList.remove('v-mode');$('fakeGlow').textContent='✦';$('fakeEy').textContent='Espera, espera...';$('fakeTitle').innerHTML='Que no! Ai, pobreta. <em>T’ho has cregut?</em>';$('fakeMsg').textContent='Tranquil·la: la sorpresa de debò ve ara. I aquesta no és de broma.';$('fakeNote').textContent='Respira.';later(startCountdown,3000)}
+function showVoucher(i){const c=cardEls()[i],v=(GIFT.vouchers&&GIFT.vouchers[i])||{no:'0000',rows:[]};
+ $('vNo').textContent='Nº '+v.no;$('vEmoji').textContent=gEmoji(c);$('vName').textContent=gName(c);$('vRows').innerHTML='';
+ v.rows.forEach(r=>{const w=document.createElement('div'),k=document.createElement('small'),t=document.createElement('span');k.textContent=r[0];t.textContent=r[1];w.append(k,t);$('vRows').append(w)});
+ const vo=$('voucher');vo.classList.remove('boom','shake');const bar=$('vBar');bar.classList.remove('run');void bar.offsetWidth;bar.classList.add('run');$('fake').classList.add('v-mode');
+ let n=10;const upd=()=>{$('vCount').textContent='Aquest val s’autodestrueix en '+n+'...'};upd();
+ const tick=()=>{n--;if(n>0){upd();if(n<=2)vo.classList.add('shake');if(audio)audio.bell(330+(10-n)*28,.14+(10-n)*.012);later(tick,1000)}else boom()};later(tick,1000)}
+function boom(){const vo=$('voucher'),sh=$('shell'),fl=$('flash'),ring=$('shock');vo.classList.remove('shake');vo.classList.add('boom');
+ fl.classList.remove('go');void fl.offsetWidth;fl.classList.add('go');sh.classList.remove('quake');void sh.offsetWidth;sh.classList.add('quake');ring.classList.remove('go');void ring.offsetWidth;ring.classList.add('go');
+ if(audio)audio.boom();fireConfetti(.42,280,2);later(()=>fireConfetti(.42,150,1.4),160);later(()=>{fl.classList.remove('go');sh.classList.remove('quake');ring.classList.remove('go')},1000);later(twist,950)}
+$('keepBtn').addEventListener('click',()=>{if(selected<0)return;goTo('fake');showVoucher(doorGifts[selected]);if(audio)audio.bell(659.25,.2)});
+function startCountdown(){goTo('countdown');const el=$('countnum');let n=3;el.textContent=String(n);if(audio)audio.bell(392,.2);function next(){n--;if(n===0){reveal();return}el.textContent=String(n);el.style.animation='none';void el.offsetWidth;el.style.animation='countZoom .8s ease-out both';if(audio)audio.bell(n===2?440:493.88,.23);later(next,1020)}later(next,1040)}
+function reveal(){goTo('final');updateDays();document.title='Una promesa per recordar ♡';$('flash').classList.remove('go');void $('flash').offsetWidth;$('flash').classList.add('go');if(audio){audio.impact();audio.bell(783.99,.22);later(()=>audio&&audio.bell(987.77,.2),220)}later(playFinalMusic,450);fireConfetti();later(()=>$('flash').classList.remove('go'),750)}
+$('skipBtn').addEventListener('click',()=>{stopTimers();$('skipBtn').hidden=true;reveal()});
+
+/* Confeti */
+function fireConfetti(yf=.3,cnt=105,pw=1){cancelAnimationFrame(confettiId);const canvas=$('confetti'),c=canvas.getContext('2d');if(!c)return;const dpr=Math.min(devicePixelRatio||1,2),w=innerWidth,h=innerHeight;canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);c.setTransform(dpr,0,0,dpr,0,0);confettiBits=Array.from({length:reduceMotion?18:cnt},(_,i)=>({x:w/2+(Math.random()-.5)*80,y:h*yf,vx:(Math.random()-.5)*9*pw,vy:-Math.random()*7*pw-2,g:.10+Math.random()*.10,sz:4+Math.random()*6,rot:Math.random()*6.28,vr:(Math.random()-.5)*.14,col:['#f3cf3a','#e3402a','#ece3cf','#c9b98e','#ff7a59'][i%5]}));confettiEnd=performance.now()+4700;let last=performance.now();function draw(t){let dt=Math.min((t-last)/16.7,2);last=t;c.clearRect(0,0,w,h);confettiBits.forEach(p=>{p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=p.g*dt;p.rot+=p.vr*dt;c.save();c.translate(p.x,p.y);c.rotate(p.rot);c.globalAlpha=Math.max(0,Math.min(1,(confettiEnd-t)/900));c.fillStyle=p.col;c.fillRect(-p.sz/2,-p.sz/2,p.sz,p.sz*.6);c.restore()});if(t<confettiEnd)confettiId=requestAnimationFrame(draw);else c.clearRect(0,0,w,h)}confettiId=requestAnimationFrame(draw)}
+
+/* Contingut de la targeta final */
+$('tWhen').textContent=GIFT.concert.dateLabel;$('tPlace').textContent=GIFT.concert.place;$('tSale').textContent=GIFT.sale.label;$('tTickets').textContent=GIFT.ticketLabel;
+$('letter').innerHTML=GIFT.letter.map((t,i)=>'<p style="--i:'+i+'"></p>').join('')+'<p class="sign" style="--i:'+GIFT.letter.length+'"></p>';
+[...$('letter').children].forEach((p,i)=>p.textContent=i<GIFT.letter.length?GIFT.letter[i]:GIFT.from);
+if('IntersectionObserver' in window){new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting&&stage==='final')$('letter').classList.add('show')}),{threshold:.35}).observe($('letter'))}else $('letter').classList.add('show');
+function daysTo(ts){const a=new Date();a.setHours(0,0,0,0);const b=new Date(ts);b.setHours(0,0,0,0);return Math.round((b-a)/864e5)}
+function updateDays(){const el=$('daysLeft'),now=Date.now(),sale=new Date(GIFT.sale.iso).getTime(),conc=new Date(GIFT.concert.date+'T00:00:00+02:00').getTime();let t='';
+ if(sale>now){const n=daysTo(sale);t=n<=0?'Avui a les 22.22: a la cua!':n===1?'Demà és la venda d’entrades.':'Falten '+n+' dies per a la venda d’entrades.'}
+ else if(conc>now){const n=daysTo(conc);t=n<=0?'És avui!':n===1?'Demà és el concert!':'Falten '+n+' dies per al concert.'}
+ el.hidden=!t;el.textContent=t}
+
+/* Calendari (.ics): venda d'entrades + dia del concert */
+$('calBtn').addEventListener('click',()=>{const f=d=>d.toISOString().replace(/[-:]/g,'').replace(/\.\d{3}/,'');const out=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Sorpresa//CA','CALSCALE:GREGORIAN'];
+ const sale=new Date(GIFT.sale.iso);
+ if(sale.getTime()>Date.now()){out.push('BEGIN:VEVENT','UID:estopa-venda-2026@sorpresa','DTSTAMP:'+f(new Date()),'DTSTART:'+f(sale),'DTEND:'+f(new Date(sale.getTime()+36e5)),'SUMMARY:ENTRADES ESTOPA · venda general','DESCRIPTION:A la cua! Si les aconseguim\\, una és teva.','BEGIN:VALARM','TRIGGER:-PT30M','ACTION:DISPLAY','DESCRIPTION:Venda d’entrades Estopa en 30 minuts','END:VALARM','END:VEVENT')}
+ const d=GIFT.concert.date.replace(/-/g,''),e=new Date(GIFT.concert.date+'T00:00:00Z');e.setUTCDate(e.getUTCDate()+1);
+ out.push('BEGIN:VEVENT','UID:estopa-bcn-2027@sorpresa','DTSTAMP:'+f(new Date()),'DTSTART;VALUE=DATE:'+d,'DTEND;VALUE=DATE:'+f(e).slice(0,8),'SUMMARY:ESTOPA · Estadi Olímpic','LOCATION:Estadi Olímpic Lluís Companys\\, Barcelona','DESCRIPTION:El nostre concert. Reserva el dia!','BEGIN:VALARM','TRIGGER:-P1D','ACTION:DISPLAY','DESCRIPTION:Demà... ESTOPA!','END:VALARM','END:VEVENT','END:VCALENDAR');
+ const url=URL.createObjectURL(new Blob([out.join('\r\n')],{type:'text/calendar'})),a=document.createElement('a');a.href=url;a.download='estopa-2027.ics';document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),10000);toast('Fet! Al calendari ♡')});
+
+/* Targeta per desar (imatge) */
+function roundRect(c,x,y,w,h,r){c.beginPath();c.moveTo(x+r,y);c.lineTo(x+w-r,y);c.quadraticCurveTo(x+w,y,x+w,y+r);c.lineTo(x+w,y+h-r);c.quadraticCurveTo(x+w,y+h,x+w-r,y+h);c.lineTo(x+r,y+h);c.quadraticCurveTo(x,y+h,x,y+h-r);c.lineTo(x,y+r);c.quadraticCurveTo(x,y,x+r,y);c.closePath()}
+function makeCard(){const c=document.createElement('canvas');c.width=1080;c.height=1560;const x=c.getContext('2d'),w=1080;
+ x.fillStyle='#141312';x.fillRect(0,0,w,1560);
+ x.save();roundRect(x,60,60,960,1440,22);x.clip();x.fillStyle='#ece3cf';x.fillRect(60,60,960,1440);
+ x.fillStyle='#14110f';x.fillRect(60,60,960,560);
+ x.textAlign='center';x.fillStyle='#f3cf3a';x.font='30px "Allerta Stencil",Arial,sans-serif';x.fillText('EL NOSTRE CONCERT  ·  BARCELONA 2027',540,150);
+ x.save();x.translate(540,430);x.transform(1,0,-.09,1,0,0);x.font='300px Anton,Impact,sans-serif';x.fillStyle='#e3402a';x.fillText('ESTOPA',10,10);x.fillStyle='#f3cf3a';x.fillText('ESTOPA',0,0);x.restore();
+ x.fillStyle='#ece3cf';x.font='32px "Allerta Stencil",Arial,sans-serif';x.fillText('LA MAKETA  ·  GIRA 2027',540,540);
+ x.restore();
+ x.strokeStyle='#14110f88';x.lineWidth=4;x.setLineDash([16,12]);x.beginPath();x.moveTo(100,700);x.lineTo(980,700);x.stroke();x.setLineDash([]);
+ x.fillStyle='#141312';x.beginPath();x.arc(60,700,24,0,7);x.fill();x.beginPath();x.arc(1020,700,24,0,7);x.fill();
+ x.textAlign='left';const row=(label,val,y)=>{x.fillStyle='#6b6150';x.font='26px "Allerta Stencil",Arial,sans-serif';x.fillText(label,120,y);x.fillStyle='#14110f';x.font='500 46px Oswald,Arial Narrow,sans-serif';x.fillText(val,120,y+56)};
+ row('DATA PREVISTA',GIFT.concert.dateLabel,790);row('LLOC','Estadi Olímpic Lluís Companys',930);row('VENDA D’ENTRADES','17 nov · 22.22 h',1070);
+ x.strokeStyle='#14110f';x.lineWidth=4;x.beginPath();x.moveTo(120,1190);x.lineTo(960,1190);x.stroke();
+ x.fillStyle='#14110f';x.font='52px Anton,Impact,sans-serif';x.fillText(('PER A '+GIFT.to).toUpperCase(),120,1262);x.textAlign='right';x.fillStyle='#e3402a';x.fillText(GIFT.ticketLabel.toUpperCase(),960,1262);
+ x.textAlign='left';x.fillStyle='#14110f';x.font='600 54px Oswald,Arial Narrow,sans-serif';x.fillText(GIFT.from.toUpperCase(),120,1400);
+ x.save();x.translate(800,1010);x.rotate(-.2);x.globalAlpha=.88;x.strokeStyle='#e3402a';x.fillStyle='#e3402a';x.lineWidth=8;x.strokeRect(-140,-62,280,110);x.textAlign='center';x.font='88px Anton,Impact,sans-serif';x.fillText('PROMESA',0,30);x.restore();
+ return c}
+$('saveBtn').addEventListener('click',async()=>{try{if(document.fonts&&document.fonts.load){await Promise.all(['300px Anton','26px "Allerta Stencil"','600 54px Oswald'].map(f=>document.fonts.load(f)))}const cv=makeCard();const blob=await new Promise(r=>cv.toBlob(r,'image/png'));if(!blob){toast('No s’ha pogut generar la imatge.');return}const file=new File([blob],'el-nostre-concert-estopa-2027.png',{type:'image/png'});if(navigator.canShare&&navigator.canShare({files:[file]})){try{await navigator.share({files:[file],title:'El nostre concert'});return}catch(e){if(e.name==='AbortError')return}}const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=file.name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),10000);toast('Targeta preparada per desar ♡')}catch(e){toast('No s’ha pogut generar la targeta.')}});
+$('shareBtn').addEventListener('click',async()=>{const url=location.href;if(!/^https?:/.test(location.protocol)){toast('Publica la web per compartir l’enllaç.');return}try{if(navigator.share){await navigator.share({title:'Una sorpresa per a tu',text:'Rasca, si t’atreveixes.',url});return}if(navigator.clipboard){await navigator.clipboard.writeText(url);toast('Enllaç copiat!')}else toast('Copia l’adreça del navegador per compartir-la.')}catch(e){if(e.name!=='AbortError')toast('Pots compartir l’adreça del navegador.')}});
+$('replayBtn').addEventListener('click',()=>{plays++;if(ytFrame){ytFrame.remove();ytFrame=null;$('ytBox').hidden=true}stopFinalMusic();stopTimers();cancelAnimationFrame(confettiId);const cx=$('confetti').getContext('2d');if(cx)cx.clearRect(0,0,innerWidth,innerHeight);started=false;selected=-1;removed=[];$('letter').classList.remove('show');$('scratch').classList.remove('done');$('openBtn').disabled=false;$('giftStage').className='gift-stage';cardEls().forEach(el=>el.classList.remove('removed'));document.querySelectorAll('.door').forEach(el=>el.classList.remove('selected','dim'));document.title='Una sorpresa per a tu';goTo('intro');scInit()});
+})();
+</script>
+</body></html>

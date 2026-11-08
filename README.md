@@ -1,2 +1,0 @@
-# regal-miriam
-regal miriam
