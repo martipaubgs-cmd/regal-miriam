@@ -215,7 +215,7 @@ const GIFT={
 // Cançó: «Vino tinto» (videoclip oficial d'Estopa, canal EstopaVEVO). S'incrusta i arrenca sola en obrir la targeta.
 // start/end = segons del fragment (ajusta start perquè caigui al cor). Només funciona publicada en https i amb internet.
 // Alternativa sense internet: posa un MP3 teu a audio/estopa.mp3 i escriu src:'audio/estopa.mp3' (té prioritat).
-const FINAL_MUSIC={youtube:'NOjgze5Nmzc',start:44,end:74,src:'',startSeconds:0,durationSeconds:30,fadeSeconds:2.5};
+const FINAL_MUSIC={vimeo:'1096770259',youtube:'NOjgze5Nmzc',start:44,end:74,src:'',startSeconds:0,durationSeconds:30,fadeSeconds:2.5};
 /* ===================================================== */
 const $=id=>document.getElementById(id);
 let stage='intro',timers=[],selected=-1,started=false,muted=false,audio=null,confettiId=0,confettiEnd=0,confettiBits=[],plays=0,removed=[],doorGifts=[];
@@ -250,16 +250,19 @@ async function playFinalMusic(){
  }catch(e){customMusic=false;if(audio)audio.toggle(muted)}
 }
 let ytFrame=null;
-function ytCmd(f,a){if(ytFrame&&ytFrame.contentWindow){try{ytFrame.contentWindow.postMessage(JSON.stringify({event:'command',func:f,args:a||''}),'*')}catch(e){}}}
+function ytCmd(f,a){if(ytFrame&&ytFrame.contentWindow){try{if(FINAL_MUSIC.vimeo){const m={pauseVideo:{method:'pause'},playVideo:{method:'play'},seekTo:{method:'setCurrentTime',value:(a&&a[0])||0}}[f];if(m)ytFrame.contentWindow.postMessage(JSON.stringify(m),'*')}else ytFrame.contentWindow.postMessage(JSON.stringify({event:'command',func:f,args:a||''}),'*')}catch(e){}}}
 let ytDead=false;
 function ytFail(){ytDead=true;if(ytFrame){ytFrame.remove();ytFrame=null}$('ytBox').hidden=true;customMusic=false;if(audio)audio.toggle(muted)}
-function playYouTube(){if(ytDead||stage!=='final'||muted||!FINAL_MUSIC.youtube)return;if(!/^https?:$/.test(location.protocol))return;
+function playYouTube(){if(ytDead||stage!=='final'||muted||!(FINAL_MUSIC.youtube||FINAL_MUSIC.vimeo))return;if(!/^https?:$/.test(location.protocol))return;
  if(ytFrame){ytCmd('seekTo',[FINAL_MUSIC.start,true]);ytCmd('playVideo');return}
+ if(FINAL_MUSIC.vimeo){ytFrame=document.createElement('iframe');ytFrame.src='https://player.vimeo.com/video/'+FINAL_MUSIC.vimeo+'?autoplay=1&playsinline=1&title=0&byline=0&portrait=0&badge=0&dnt=1#t='+FINAL_MUSIC.start+'s';ytFrame.title='Estopa · Vino tinto';ytFrame.allow='autoplay; encrypted-media; picture-in-picture';ytFrame.referrerPolicy='strict-origin-when-cross-origin';
+  ytFrame.addEventListener('load',()=>{['play','pause','ended','timeupdate'].forEach(ev=>{try{ytFrame.contentWindow.postMessage(JSON.stringify({method:'addEventListener',value:ev}),'*')}catch(e){}})});
+  $('ytBox').hidden=false;$('ytBox').append(ytFrame);return}
  const q=new URLSearchParams({autoplay:'1',start:String(FINAL_MUSIC.start),end:String(FINAL_MUSIC.end),playsinline:'1',rel:'0',modestbranding:'1',enablejsapi:'1'});
  ytFrame=document.createElement('iframe');ytFrame.src='https://www.youtube-nocookie.com/embed/'+FINAL_MUSIC.youtube+'?'+q;ytFrame.title='Estopa · Vino tinto (videoclip oficial)';ytFrame.allow='autoplay; encrypted-media; picture-in-picture';ytFrame.referrerPolicy='strict-origin-when-cross-origin';ytFrame.setAttribute('allowfullscreen','');
  ytFrame.addEventListener('load',()=>{try{ytFrame.contentWindow.postMessage(JSON.stringify({event:'listening',id:1}),'*')}catch(e){}});
  $('ytBox').hidden=false;$('ytBox').append(ytFrame)}
-window.addEventListener('message',e=>{if(!ytFrame||e.source!==ytFrame.contentWindow)return;let d=e.data;if(typeof d==='string'){try{d=JSON.parse(d)}catch(_){return}}if(!d)return;if(d.event==='onError'){ytFail();return}let st=null;if(d.event==='onStateChange')st=d.info;else if(d.event==='infoDelivery'&&d.info&&typeof d.info.playerState==='number')st=d.info.playerState;if(st===1){customMusic=true;if(audio)audio.toggle(true)}else if(st===0||st===2){customMusic=false;if(audio)audio.toggle(muted)}});
+window.addEventListener('message',e=>{if(!ytFrame||e.source!==ytFrame.contentWindow)return;let d=e.data;if(typeof d==='string'){try{d=JSON.parse(d)}catch(_){return}}if(!d)return;if(FINAL_MUSIC.vimeo){if(d.event==='play'){customMusic=true;if(audio)audio.toggle(true)}else if(d.event==='pause'||d.event==='ended'){customMusic=false;if(audio)audio.toggle(muted)}else if(d.event==='timeupdate'&&d.data&&d.data.seconds>=FINAL_MUSIC.end){ytCmd('pauseVideo')}return}if(d.event==='onError'){ytFail();return}let st=null;if(d.event==='onStateChange')st=d.info;else if(d.event==='infoDelivery'&&d.info&&typeof d.info.playerState==='number')st=d.info.playerState;if(st===1){customMusic=true;if(audio)audio.toggle(true)}else if(st===0||st===2){customMusic=false;if(audio)audio.toggle(muted)}});
 finalTrack.addEventListener('ended',()=>stopFinalMusic());
 function audioStart(){if(!audio)audio=new OriginalScore();if(audio){audio.start();audio.toggle(muted||customMusic)}}
 function soundClick(){muted=!muted;const b=$('soundToggle');b.setAttribute('aria-pressed',String(!muted));b.setAttribute('aria-label',muted?'Activar el so':'Silenciar');if(muted){stopFinalMusic()}else{if(started)audioStart();if(stage==='final')playFinalMusic()}if(audio)audio.toggle(muted||customMusic)}
